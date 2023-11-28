@@ -5,40 +5,38 @@
     >
       Characters
     </h1>
-    <div>
-      <form class="flex md:flex-row flex-col gap-y-4 gap-x-2 justify-around my-10">
-        <input v-model="filter.name" placeholder="Nombre" />
-        <input v-model="filter.species" placeholder="Especie" />
-        <input v-model="filter.type" placeholder="Tipo" />
-        <select v-model="filter.gender">
-          <option
-            v-for="gender in genders"
-            :key="gender.value"
-            :value="gender.value"
-            :selected="gender.value === filter.gender"
-          >
-            {{ gender.text }}
-          </option>
-        </select>
-        <select v-model="filter.status">
-          <option
-            v-for="s in status"
-            :key="s.value"
-            :value="s.value"
-            :selected="s.value === filter.status"
-          >
-            {{ s.text }}
-          </option>
-        </select>
-        <button
-          type="button"
-          @click="sendForm"
-          class="border border-white py-1 px-3 text-white rounded-md bg-[#3c3e44]"
+    <form class="flex md:flex-row flex-col gap-4 my-10">
+      <input v-model="filter.name" placeholder="Nombre" />
+      <input v-model="filter.species" placeholder="Especie" />
+      <input v-model="filter.type" placeholder="Tipo" />
+      <select v-model="filter.gender">
+        <option
+          v-for="gender in genders"
+          :key="gender.value"
+          :value="gender.value"
+          :selected="gender.value === filter.gender"
         >
-          SendForm
-        </button>
-      </form>
-    </div>
+          {{ gender.text }}
+        </option>
+      </select>
+      <select v-model="filter.status">
+        <option
+          v-for="s in status"
+          :key="s.value"
+          :value="s.value"
+          :selected="s.value === filter.status"
+        >
+          {{ s.text }}
+        </option>
+      </select>
+      <button
+        type="button"
+        @click="sendForm"
+        class="border border-white px-6 text-white rounded-md bg-[#3c3e44]"
+      >
+        Buscar
+      </button>
+    </form>
     <div class="flex md:flex-row flex-wrap flex-col gap-6">
       <template v-for="item in data?.results" :key="item.id">
         <character-card :character="item" />
@@ -48,9 +46,9 @@
 </template>
 
 <script setup>
-import { characters } from "../providers/api";
+import { characterList } from "../providers/api";
 import { onMounted, ref } from "vue";
-import CharacterCard from "../components/CharacterCard.vue";
+import CharacterCard from '../components/CharacterCard.vue';
 
 const data = ref(null);
 
@@ -111,7 +109,7 @@ function sendForm() {
 }
 
 async function getCharacters() {
-  data.value = await characters(filter);
+  data.value = await characterList({filter});
 }
 </script>
 

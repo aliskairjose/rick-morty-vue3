@@ -13,8 +13,7 @@
         </h1>
         <div class="flex">
           <div
-            class="p-[5px] rounded-full my-auto mr-2"
-            :style="{ backgroundColor: isAlive }"
+            class="p-[5px] rounded-full my-auto mr-2 dot"
           ></div>
           <span>{{ character.status }} - {{ character.species }}</span>
         </div>
@@ -32,12 +31,20 @@
 </template>
 
 <script setup>
-  import { computed, ref } from "vue";
+  import { onMounted, ref } from "vue";
+  const data = defineProps(["character"]);
+  const color = ref('')
 
-  defineProps(["character"]);
-  const isAlive = computed(()=>{
-    return 'green'
+  onMounted(()=>{
+    data.character.status==='Alive' && (color.value = 'green')
+    data.character.status==='Dead' && (color.value = 'red')
+    data.character.status==='unknown' && (color.value = 'gray')
   })
+  
 </script>
 
-<style lang="css" scoped></style>
+<style lang="css" scoped>
+  .dot{
+    background-color: v-bind(color);
+  }
+</style>
