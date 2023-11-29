@@ -31,7 +31,7 @@
       </select>
       <button
         type="button"
-        @click="sendForm"
+        @click="getCharacters"
         class="border border-white px-6 text-white rounded-md bg-[#3c3e44]"
       >
         Buscar
@@ -103,10 +103,6 @@ const status = [
 ];
 
 onMounted(() => getCharacters());
-
-function sendForm() {
-  getCharacters()
-}
 
 async function getCharacters() {
   data.value = await characterList({filter});

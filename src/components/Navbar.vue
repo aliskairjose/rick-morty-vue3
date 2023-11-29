@@ -6,17 +6,17 @@
      -->
     <router-link
       to="/"
-      class="hover:text-yellow-500 hover:border hover:border-yellow-500 hover:p-2 hover:rounded-md"
+      class="hover:text-yellow-500"
       >Characters</router-link
     >
     <router-link
       to="/episodes"
-      class="hover:text-yellow-500 hover:border hover:border-yellow-500 hover:p-2 hover:rounded-md"
+      class="hover:text-yellow-500"
       >Episodes</router-link
     >
     <router-link
       :to="{ name: 'Locations' }"
-      class="hover:text-yellow-500 hover:border hover:border-yellow-500 hover:p-2 hover:rounded-md"
+      class="hover:text-yellow-500"
       >Locations</router-link
     >
   </div>

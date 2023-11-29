@@ -5,6 +5,18 @@
     >
       Locations
     </h1>
+    <form class="flex md:flex-row flex-col gap-4 my-10">
+      <input v-model="filter.name" placeholder="Nombre" />
+      <input v-model="filter.type" placeholder="Tipo" />
+      <input v-model="filter.dimension" placeholder="Dimension" />
+      <button
+        type="button"
+        @click="getLocations"
+        class="border border-white px-6 text-white rounded-md bg-[#3c3e44]"
+      >
+        Buscar
+      </button>
+    </form>
     <div class="flex md:flex-row flex-wrap flex-col gap-4">
       <template v-for="item in data?.results" :key="item.id">
         <div class="w-[300px] p-4 bg-[#3c3e44] rounded-md">
@@ -51,26 +63,38 @@
               leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
               <DialogPanel
-                class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-5xl"
+                class="relative transform overflow-hidden rounded-lg bg-[#272b33] text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-5xl"
               >
-                <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                <div class="bg-[#272b33] px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
                   <div class="sm:flex sm:items-start">
-                    <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left w-full">
+                    <div
+                      class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left w-full"
+                    >
                       <DialogTitle
                         as="h3"
-                        class="text-3xl font-semibold leading-6 text-gray-900 text-center my-6"
-                        >Residentes de {{ residents[0].location.name }}</DialogTitle
+                        class="text-3xl font-semibold leading-6 text-center my-6"
+                        >Residentes de
+                        <span class="text-yellow-600">{{
+                          residents[0].location.name
+                        }}</span></DialogTitle
                       >
                       <div class="flex flex-row flex-wrap gap-3 mt-2">
                         <div
                           v-for="resident in residents"
                           :key="resident.id"
-                          class="text-black rounded-md border shadow w-[180px]"
+                          class="rounded-md w-[180px] bg-[#3c3e44]"
                         >
-                          <img :src="resident.image" :alt="resident.name" class="rounded-t-md" />
+                          <img
+                            :src="resident.image"
+                            :alt="resident.name"
+                            class="rounded-t-md"
+                          />
                           <div class="p-2 text-sm">
                             <h2 class="text-base">{{ resident.name }}</h2>
-                            <p>{{ resident.status }} - {{ resident.species }} - {{ resident.gender }}</p>
+                            <p>
+                              {{ resident.status }} - {{ resident.species }} -
+                              {{ resident.gender }}
+                            </p>
                           </div>
                         </div>
                       </div>
@@ -78,7 +102,7 @@
                   </div>
                 </div>
                 <div
-                  class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6"
+                  class="px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 bg-[#272b33]"
                 >
                   <button
                     type="button"
@@ -111,11 +135,17 @@ import {
 const open = ref(false);
 const data = ref(null);
 const residents = ref([]);
+const filter = {
+  name:'',
+  type:'',
+  dimension:''
+};
 
 onMounted(() => getLocations());
 
+
 async function getLocations() {
-  data.value = await locationList();
+  data.value = await locationList({filter});
 }
 
 async function openModal(_residents) {
@@ -124,9 +154,26 @@ async function openModal(_residents) {
     const id = resident.split("/").at(-1);
     ids.push(id);
   }
-  residents.value = await characterList({ ids });
+
+  _residents.length === 1
+    ? (residents.value = [await characterList({ ids })])
+    : (residents.value = await characterList({ ids }));
+
   open.value = true;
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="css" scoped>
+
+input, select {
+  color: white;
+  border: 1px solid#3c3e44;
+  border-radius: 7px;
+  padding: 5px 10px;
+  background-color: #3c3e44;
+}
+
+input::placeholder{
+  color:white
+}
+</style>

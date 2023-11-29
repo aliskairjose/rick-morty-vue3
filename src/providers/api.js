@@ -5,7 +5,7 @@ const instance = axios.create({
   params: {},
 });
 
-export const characterList = async ({ids=[], filter={} }) => {
+export const characterList = async ({ ids = [], filter = {} }) => {
   const params = {};
   Object.entries(filter).forEach(([k, v]) => v && (params[k] = v));
   return instance
@@ -14,16 +14,22 @@ export const characterList = async ({ids=[], filter={} }) => {
     .catch(console.error);
 };
 
-export const episodeList = async () => {
+export const episodeList = async ({ filter = {} }) => {
+  const params = {};
+  Object.entries(filter).forEach(([k, v]) => v && (params[k] = v));
+
   return instance
-    .get("/episode")
+    .get("/episode", { params })
     .then((res) => res.data)
     .catch(console.error);
 };
 
-export const locationList = async () => {
+export const locationList = async ({ filter = {} }) => {
+  const params = {};
+  Object.entries(filter).forEach(([k, v]) => v && (params[k] = v));
+
   return instance
-    .get("/location")
+    .get("/location", { params })
     .then((res) => res.data)
     .catch(console.error);
 };
