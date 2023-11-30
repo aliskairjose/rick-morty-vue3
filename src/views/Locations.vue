@@ -19,7 +19,7 @@
     </form>
     <div class="flex md:flex-row flex-wrap flex-col gap-4">
       <template v-for="item in data?.results" :key="item.id">
-        <div class="w-[300px] p-4 bg-[#3c3e44] rounded-md">
+        <div class="lg:w-[300px] md:w-[350px] w-full p-4 bg-[#3c3e44] rounded-md box-border">
           <h1 class="text-xl text-yellow-600">{{ item.name }}</h1>
           <p>{{ item.type }} - {{ item.dimension }}</p>
           <p @click="openModal(item.residents)" class="cursor-pointer">
