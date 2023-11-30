@@ -6,10 +6,9 @@
       Characters
     </h1>
     <div class="w-full">
-      <form class="grid xl:grid-flow-col grid-flow-row gap-4 my-10">
+      <form class="flex md:flex-row flex-col gap-3 my-10">
         <input v-model="filter.name" placeholder="Nombre" />
         <input v-model="filter.species" placeholder="Especie" />
-        <input v-model="filter.type" placeholder="Tipo" />
         <select v-model="filter.gender">
           <option
             v-for="gender in genders"

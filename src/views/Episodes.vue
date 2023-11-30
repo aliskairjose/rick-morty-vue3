@@ -5,7 +5,7 @@
     >
       Episodes
     </h1>
-    <form class="grid xl:grid-flow-col grid-flow-row gap-4 my-10">
+    <form class="flex md:flex-row flex-col gap-3 my-10">
       <input v-model="filter.name" placeholder="Nombre" />
       <input v-model="filter.episode" placeholder="Episodio" />
       <button
