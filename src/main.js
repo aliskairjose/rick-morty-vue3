@@ -1,11 +1,9 @@
 import { createApp } from 'vue'
 import './style.css'
 import App from './App.vue'
-import * as Vue from 'vue' // in Vue 3
-import axios from 'axios'
-import VueAxios from 'vue-axios'
 import routerV from './router'; // no se importa /index por ser el indice
+import VueAwesomePaginate from "vue-awesome-paginate";
+import "vue-awesome-paginate/dist/style.css";
 
-
-createApp(App).use(routerV).mount('#app')
+createApp(App).use(routerV).use(VueAwesomePaginate).mount('#app')
 

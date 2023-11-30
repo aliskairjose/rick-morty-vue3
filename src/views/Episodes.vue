@@ -17,8 +17,10 @@
       </button>
     </form>
     <div class="flex md:flex-row flex-wrap flex-col lg:gap-4 gap-2">
-      <template v-for="item in data?.results" :key="item.id">
-        <div class="lg:w-[300px] md:w-[350px] w-full p-4 bg-[#3c3e44] rounded-md box-border">
+      <template v-for="item in results" :key="item.id">
+        <div
+          class="lg:w-[300px] md:w-[350px] w-full p-4 bg-[#3c3e44] rounded-md box-border"
+        >
           <h1 class="text-xl text-yellow-600">
             {{ item.name }} -
             <span class="text-base text-white">{{ item.episode }}</span>
@@ -30,6 +32,12 @@
           </p>
         </div>
       </template>
+      <vue-awesome-paginate
+        :total-items="info.count"
+        :items-per-page="info.count / info.pages"
+        v-model="currentPage"
+        :on-click="onClickHandler"
+      />
     </div>
   </div>
   <!-- Modal -->
@@ -130,20 +138,37 @@ import {
   TransitionChild,
   TransitionRoot,
 } from "@headlessui/vue";
-const data = ref(null);
+
+const currentPage = ref(1);
+const results = ref([]);
+const info = ref({
+  count: 0,
+  pages: 0,
+  next: "",
+  prev: null,
+});
+
 const open = ref(false);
 const residents = ref([]);
 const episodeName = ref("");
 const filter = {
   name: "",
   episode: "",
+  page: null,
 };
 
 onMounted(() => getEpisodes());
 
 async function getEpisodes() {
-  data.value = await episodeList({ filter });
+  const data = await episodeList({ filter });
+  info.value = data.info;
+  results.value = data.results;
 }
+
+const onClickHandler = async (page) => {
+  filter.page = page;
+  await getEpisodes();
+};
 
 async function openModal(episodio) {
   episodeName.value = episodio.name;
@@ -162,16 +187,16 @@ async function openModal(episodio) {
 </script>
 
 <style lang="css" scoped>
-  input,
-  select {
-    color: white;
-    border: 1px solid#3c3e44;
-    border-radius: 7px;
-    padding: 5px 10px;
-    background-color: #3c3e44;
-  }
+input,
+select {
+  color: white;
+  border: 1px solid#3c3e44;
+  border-radius: 7px;
+  padding: 5px 10px;
+  background-color: #3c3e44;
+}
 
-  input::placeholder {
-    color: white;
-  }
+input::placeholder {
+  color: white;
+}
 </style>

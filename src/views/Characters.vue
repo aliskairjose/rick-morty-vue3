@@ -40,9 +40,16 @@
       </form>
     </div>
     <div class="flex md:flex-row flex-wrap flex-col gap-6">
-      <template v-for="item in data?.results" :key="item.id">
+      <template v-for="item in results" :key="item.id">
         <character-card :character="item" />
       </template>
+      <vue-awesome-paginate
+        :total-items="info.count"
+        :items-per-page="info.count/info.pages"
+        :max-pages-shown="5"
+        v-model="currentPage"
+        :on-click="onClickHandler"
+      />
     </div>
   </div>
 </template>
@@ -52,7 +59,14 @@ import { characterList } from "../providers/api";
 import { onMounted, ref } from "vue";
 import CharacterCard from "../components/CharacterCard.vue";
 
-const data = ref(null);
+const currentPage = ref(1);
+const results = ref([]);
+const info = ref({
+  count: 0,
+  pages: 0,
+  next: "",
+  prev: null,
+});
 
 const filter = {
   name: null,
@@ -60,6 +74,7 @@ const filter = {
   type: null,
   status: null,
   gender: null,
+  page: null
 };
 
 const genders = [
@@ -106,8 +121,15 @@ const status = [
 
 onMounted(() => getCharacters());
 
+const onClickHandler = async (page) => {
+  filter.page = page
+  await getCharacters()
+};
+
 async function getCharacters() {
-  data.value = await characterList({ filter });
+  const data = await characterList({ filter });
+  results.value = data.results;
+  info.value = data.info;
 }
 </script>
 

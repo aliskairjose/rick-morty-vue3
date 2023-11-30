@@ -18,8 +18,10 @@
       </button>
     </form>
     <div class="flex md:flex-row flex-wrap flex-col gap-4">
-      <template v-for="item in data?.results" :key="item.id">
-        <div class="lg:w-[300px] md:w-[350px] w-full p-4 bg-[#3c3e44] rounded-md box-border">
+      <template v-for="item in results" :key="item.id">
+        <div
+          class="lg:w-[300px] md:w-[350px] w-full p-4 bg-[#3c3e44] rounded-md box-border"
+        >
           <h1 class="text-xl text-yellow-600">{{ item.name }}</h1>
           <p>{{ item.type }} - {{ item.dimension }}</p>
           <p @click="openModal(item.residents)" class="cursor-pointer">
@@ -28,6 +30,12 @@
           </p>
         </div>
       </template>
+      <vue-awesome-paginate
+        :total-items="info.count"
+        :items-per-page="info.count / info.pages"
+        v-model="currentPage"
+        :on-click="onClickHandler"
+      />
     </div>
   </div>
 
@@ -133,19 +141,35 @@ import {
 } from "@headlessui/vue";
 
 const open = ref(false);
-const data = ref(null);
+const results = ref([]);
+const currentPage = ref(1);
+const info = ref({
+  count: 0,
+  pages: 0,
+  next: "",
+  prev: null,
+});
+
 const residents = ref([]);
+
 const filter = {
-  name:'',
-  type:'',
-  dimension:''
+  name: "",
+  type: "",
+  dimension: "",
+  page: null,
 };
 
 onMounted(() => getLocations());
 
+const onClickHandler = async (page) => {
+  filter.page = page;
+  await getLocations();
+};
 
 async function getLocations() {
-  data.value = await locationList({filter});
+  const data = await locationList({ filter });
+  info.value = data.info;
+  results.value = data.results;
 }
 
 async function openModal(_residents) {
@@ -164,8 +188,8 @@ async function openModal(_residents) {
 </script>
 
 <style lang="css" scoped>
-
-input, select {
+input,
+select {
   color: white;
   border: 1px solid#3c3e44;
   border-radius: 7px;
@@ -173,7 +197,7 @@ input, select {
   background-color: #3c3e44;
 }
 
-input::placeholder{
-  color:white
+input::placeholder {
+  color: white;
 }
 </style>
