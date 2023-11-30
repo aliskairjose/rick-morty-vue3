@@ -37,6 +37,7 @@
         :items-per-page="info.count / info.pages"
         v-model="currentPage"
         :on-click="onClickHandler"
+        
       />
     </div>
   </div>

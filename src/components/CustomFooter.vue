@@ -15,7 +15,7 @@
         <div class="lg:flex-1 flex-none">
           <div class="border rounded w-fit float-right p-1">
             <a
-              href="https://github.com/aliskairjose/weather"
+              href="https://github.com/aliskairjose/rick-morty-vue3"
               target="_blank"
               rel="noopener noreferrer"
             >
