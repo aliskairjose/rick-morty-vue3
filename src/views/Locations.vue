@@ -17,7 +17,13 @@
         Buscar
       </button>
     </form>
-    <div class="flex md:flex-row flex-wrap flex-col gap-4 mb-8">
+    <div v-if="isLoading" class="grid place-content-center h-96">
+      <Spinner />
+    </div>
+    <div
+      class="flex md:flex-row flex-wrap flex-col gap-4 mb-8"
+      v-if="!isLoading"
+    >
       <template v-for="item in results" :key="item.id">
         <div
           class="lg:w-[300px] md:w-[350px] w-full p-4 bg-[#3c3e44] rounded-md box-border"
@@ -73,7 +79,13 @@
               <DialogPanel
                 class="relative transform overflow-hidden rounded-lg bg-[#272b33] text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-5xl"
               >
-                <div class="bg-[#272b33] px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                <div v-if="isLoading" class="grid place-content-center h-96">
+                  <Spinner />
+                </div>
+                <div
+                  class="bg-[#272b33] px-4 pb-4 pt-5 sm:p-6 sm:pb-4"
+                  v-if="!isLoading"
+                >
                   <div class="sm:flex sm:items-start">
                     <div
                       class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left w-full"
@@ -132,6 +144,8 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import { locationList, characterList } from "../providers/api";
+import Spinner from "../components/Spinner.vue";
+
 import {
   Dialog,
   DialogPanel,
@@ -140,6 +154,7 @@ import {
   TransitionRoot,
 } from "@headlessui/vue";
 
+const isLoading = ref(true);
 const open = ref(false);
 const results = ref([]);
 const currentPage = ref(1);
@@ -167,12 +182,16 @@ const onClickHandler = async (page) => {
 };
 
 async function getLocations() {
+  isLoading.value = true;
   const data = await locationList({ filter });
   info.value = data.info;
   results.value = data.results;
+  isLoading.value = false;
 }
 
 async function openModal(_residents) {
+  isLoading.value = true
+  open.value = true;
   const ids = [];
   for (const resident of _residents) {
     const id = resident.split("/").at(-1);
@@ -182,8 +201,7 @@ async function openModal(_residents) {
   _residents.length === 1
     ? (residents.value = [await characterList({ ids })])
     : (residents.value = await characterList({ ids }));
-
-  open.value = true;
+  isLoading.value = false
 }
 </script>
 

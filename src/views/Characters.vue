@@ -38,7 +38,10 @@
         </button>
       </form>
     </div>
-    <div class="flex md:flex-row flex-wrap flex-col gap-6 mb-8">
+    <div v-if="isLoading" class="grid place-content-center h-96">
+      <Spinner />
+    </div>
+    <div class="flex md:flex-row flex-wrap flex-col gap-6 mb-8" v-if="!isLoading">
       <template v-for="item in results" :key="item.id">
         <character-card :character="item" />
       </template>
@@ -57,7 +60,9 @@
 import { characterList } from "../providers/api";
 import { onMounted, ref } from "vue";
 import CharacterCard from "../components/CharacterCard.vue";
+import Spinner from '../components/Spinner.vue'
 
+const isLoading = ref(true)
 const currentPage = ref(1);
 const results = ref([]);
 const info = ref({
@@ -126,9 +131,11 @@ const onClickHandler = async (page) => {
 };
 
 async function getCharacters() {
+  isLoading.value = true
   const data = await characterList({ filter });
   results.value = data.results;
   info.value = data.info;
+  isLoading.value = false
 }
 </script>
 

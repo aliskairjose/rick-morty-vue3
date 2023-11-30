@@ -16,7 +16,10 @@
         Buscar
       </button>
     </form>
-    <div class="flex md:flex-row flex-wrap flex-col lg:gap-4 gap-2 mb-8">
+    <div v-if="isLoading" class="grid place-content-center h-96">
+      <Spinner />
+    </div>
+    <div class="flex md:flex-row flex-wrap flex-col lg:gap-4 gap-2 mb-8" v-if="!isLoading">
       <template v-for="item in results" :key="item.id">
         <div
           class="lg:w-[300px] md:w-[350px] w-full p-4 bg-[#3c3e44] rounded-md box-border"
@@ -75,7 +78,10 @@
               <DialogPanel
                 class="relative transform overflow-hidden rounded-lg bg-[#272b33] text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-5xl"
               >
-                <div class="bg-[#272b33] px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+              <div v-if="isLoading" class="grid place-content-center h-96">
+                  <Spinner />
+                </div>
+                <div class="bg-[#272b33] px-4 pb-4 pt-5 sm:p-6 sm:pb-4" v-if="!isLoading">
                   <div class="sm:flex sm:items-start">
                     <div
                       class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left w-full"
@@ -132,6 +138,8 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { episodeList, characterList } from "../providers/api";
+import Spinner from '../components/Spinner.vue'
+
 import {
   Dialog,
   DialogPanel,
@@ -141,6 +149,7 @@ import {
 } from "@headlessui/vue";
 
 const currentPage = ref(1);
+const isLoading = ref(true)
 const results = ref([]);
 const info = ref({
   count: 0,
@@ -161,9 +170,11 @@ const filter = {
 onMounted(() => getEpisodes());
 
 async function getEpisodes() {
+  isLoading.value = true
   const data = await episodeList({ filter });
   info.value = data.info;
   results.value = data.results;
+  isLoading.value = false
 }
 
 const onClickHandler = async (page) => {
@@ -172,6 +183,8 @@ const onClickHandler = async (page) => {
 };
 
 async function openModal(episodio) {
+  open.value = true;
+  isLoading.value = true
   episodeName.value = episodio.name;
   const ids = [];
   for (const character of episodio.characters) {
@@ -182,8 +195,7 @@ async function openModal(episodio) {
   episodio.characters.length === 1
     ? (residents.value = [await characterList({ ids })])
     : (residents.value = await characterList({ ids }));
-
-  open.value = true;
+    isLoading.value = false
 }
 </script>
 
