@@ -22,7 +22,7 @@
     </div>
     <div
       class="flex md:flex-row flex-wrap flex-col gap-4 mb-8"
-      v-if="!isLoading"
+      v-else
     >
       <template v-for="item in results" :key="item.id">
         <div
@@ -84,7 +84,7 @@
                 </div>
                 <div
                   class="bg-[#272b33] px-4 pb-4 pt-5 sm:p-6 sm:pb-4"
-                  v-if="!isLoading"
+                  v-else
                 >
                   <div class="sm:flex sm:items-start">
                     <div

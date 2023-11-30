@@ -41,7 +41,7 @@
     <div v-if="isLoading" class="grid place-content-center h-96">
       <Spinner />
     </div>
-    <div class="flex md:flex-row flex-wrap flex-col gap-6 mb-8" v-if="!isLoading">
+    <div class="flex md:flex-row flex-wrap flex-col gap-6 mb-8" v-else>
       <template v-for="item in results" :key="item.id">
         <character-card :character="item" />
       </template>
