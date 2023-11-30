@@ -39,18 +39,18 @@
         </button>
       </form>
     </div>
-    <div class="flex md:flex-row flex-wrap flex-col gap-6">
+    <div class="flex md:flex-row flex-wrap flex-col gap-6 mb-8">
       <template v-for="item in results" :key="item.id">
         <character-card :character="item" />
       </template>
-      <vue-awesome-paginate
-        :total-items="info.count"
-        :items-per-page="info.count/info.pages"
-        :max-pages-shown="5"
-        v-model="currentPage"
-        :on-click="onClickHandler"
-      />
     </div>
+    <vue-awesome-paginate
+      :total-items="info.count"
+      :items-per-page="info.count/info.pages"
+      :max-pages-shown="5"
+      v-model="currentPage"
+      :on-click="onClickHandler"
+    />
   </div>
 </template>
 

@@ -16,7 +16,7 @@
         Buscar
       </button>
     </form>
-    <div class="flex md:flex-row flex-wrap flex-col lg:gap-4 gap-2">
+    <div class="flex md:flex-row flex-wrap flex-col lg:gap-4 gap-2 mb-8">
       <template v-for="item in results" :key="item.id">
         <div
           class="lg:w-[300px] md:w-[350px] w-full p-4 bg-[#3c3e44] rounded-md box-border"
@@ -32,14 +32,14 @@
           </p>
         </div>
       </template>
-      <vue-awesome-paginate
-        :total-items="info.count"
-        :items-per-page="info.count / info.pages"
-        v-model="currentPage"
-        :on-click="onClickHandler"
-        
-      />
     </div>
+    <vue-awesome-paginate
+      :total-items="info.count"
+      :items-per-page="info.count / info.pages"
+      v-model="currentPage"
+      :on-click="onClickHandler"
+      
+    />
   </div>
   <!-- Modal -->
   <div>
