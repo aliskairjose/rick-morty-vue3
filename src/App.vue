@@ -9,7 +9,7 @@ import CustomFooter from "./components/CustomFooter.vue";
     <nav>
       <navbar />
     </nav>
-    <main class="">
+    <main class="max-w-7xl">
       <router-view></router-view>
     </main>
     <custom-footer />

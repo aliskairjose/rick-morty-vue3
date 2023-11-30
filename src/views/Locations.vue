@@ -1,11 +1,11 @@
 <template>
   <div>
     <h1
-      class="text-3xl text-yellow-500 w-full text-center font-semibold tracking-widest mb-16"
+      class="text-3xl text-yellow-500 w-full text-center font-semibold tracking-widest my-8"
     >
       Locations
     </h1>
-    <form class="flex md:flex-row flex-col gap-4 my-10">
+    <form class="grid xl:grid-flow-col grid-flow-row gap-4 my-10">
       <input v-model="filter.name" placeholder="Nombre" />
       <input v-model="filter.type" placeholder="Tipo" />
       <input v-model="filter.dimension" placeholder="Dimension" />

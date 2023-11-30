@@ -1,5 +1,5 @@
 <template>
-  <div class="h-[80px] flex flex-row justify-center items-center gap-12">
+  <div class="h-[80px] flex flex-row justify-center items-center gap-12 border-b border-gray-400">
     <!-- 
       Usando :to se llama a la ruta por el nombre que se le dio en la configuracion de rutas, 
       funciona igual que con la url

@@ -1,42 +1,44 @@
 <template>
-  <div>
+  <div class="full">
     <h1
-      class="text-3xl text-yellow-500 w-full text-center font-semibold tracking-widest mb-16"
+      class="text-3xl text-yellow-500 w-full text-center font-semibold tracking-widest my-8"
     >
       Characters
     </h1>
-    <form class="flex md:flex-row flex-col gap-4 my-10">
-      <input v-model="filter.name" placeholder="Nombre" />
-      <input v-model="filter.species" placeholder="Especie" />
-      <input v-model="filter.type" placeholder="Tipo" />
-      <select v-model="filter.gender">
-        <option
-          v-for="gender in genders"
-          :key="gender.value"
-          :value="gender.value"
-          :selected="gender.value === filter.gender"
+    <div class="w-full">
+      <form class="grid xl:grid-flow-col grid-flow-row gap-4 my-10">
+        <input v-model="filter.name" placeholder="Nombre" />
+        <input v-model="filter.species" placeholder="Especie" />
+        <input v-model="filter.type" placeholder="Tipo" />
+        <select v-model="filter.gender">
+          <option
+            v-for="gender in genders"
+            :key="gender.value"
+            :value="gender.value"
+            :selected="gender.value === filter.gender"
+          >
+            {{ gender.text }}
+          </option>
+        </select>
+        <select v-model="filter.status">
+          <option
+            v-for="s in status"
+            :key="s.value"
+            :value="s.value"
+            :selected="s.value === filter.status"
+          >
+            {{ s.text }}
+          </option>
+        </select>
+        <button
+          type="button"
+          @click="getCharacters"
+          class="border border-white px-6 text-white rounded-md bg-[#3c3e44]"
         >
-          {{ gender.text }}
-        </option>
-      </select>
-      <select v-model="filter.status">
-        <option
-          v-for="s in status"
-          :key="s.value"
-          :value="s.value"
-          :selected="s.value === filter.status"
-        >
-          {{ s.text }}
-        </option>
-      </select>
-      <button
-        type="button"
-        @click="getCharacters"
-        class="border border-white px-6 text-white rounded-md bg-[#3c3e44]"
-      >
-        Buscar
-      </button>
-    </form>
+          Buscar
+        </button>
+      </form>
+    </div>
     <div class="flex md:flex-row flex-wrap flex-col gap-6">
       <template v-for="item in data?.results" :key="item.id">
         <character-card :character="item" />
@@ -48,7 +50,7 @@
 <script setup>
 import { characterList } from "../providers/api";
 import { onMounted, ref } from "vue";
-import CharacterCard from '../components/CharacterCard.vue';
+import CharacterCard from "../components/CharacterCard.vue";
 
 const data = ref(null);
 
@@ -105,13 +107,13 @@ const status = [
 onMounted(() => getCharacters());
 
 async function getCharacters() {
-  data.value = await characterList({filter});
+  data.value = await characterList({ filter });
 }
 </script>
 
 <style lang="css" scoped>
-
-input, select {
+input,
+select {
   color: white;
   border: 1px solid#3c3e44;
   border-radius: 7px;
@@ -119,7 +121,7 @@ input, select {
   background-color: #3c3e44;
 }
 
-input::placeholder{
-  color:white
+input::placeholder {
+  color: white;
 }
 </style>
