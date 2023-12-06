@@ -1,5 +1,4 @@
 <template>
-  <div>
     <h1
       class="text-3xl text-yellow-500 w-full text-center font-semibold tracking-widest my-8"
     >
@@ -21,7 +20,7 @@
       <Spinner />
     </div>
     <div
-      class="flex md:flex-row flex-wrap flex-col gap-4 mb-8"
+      class="flex md:flex-row flex-wrap flex-col gap-1 mb-8"
       v-else
     >
       <template v-for="item in results" :key="item.id">
@@ -43,7 +42,6 @@
       v-model="currentPage"
       :on-click="onClickHandler"
     />
-  </div>
 
   <!-- Modal -->
   <div>
