@@ -1,5 +1,4 @@
 <template>
-  <div class="full">
     <h1
       class="text-3xl text-yellow-500 w-full text-center font-semibold tracking-widest my-8"
     >
@@ -57,7 +56,6 @@
       v-model="currentPage"
       :on-click="onClickHandler"
     />
-  </div>
 </template>
 
 <script setup>

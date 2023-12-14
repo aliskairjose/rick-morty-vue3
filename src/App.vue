@@ -5,11 +5,12 @@ import CustomFooter from "./components/CustomFooter.vue";
 </script>
 
 <template>
-  <div class="w-full">
+  <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+  <!-- <div class=""> -->
     <nav>
       <navbar />
     </nav>
-    <main class="max-w-7xl">
+    <main class="">
       <router-view></router-view>
     </main>
     <custom-footer />
