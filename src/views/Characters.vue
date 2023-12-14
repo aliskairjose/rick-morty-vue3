@@ -43,12 +43,16 @@
     </div>
     <div class="flex md:flex-row flex-wrap flex-col gap-6 mb-8" v-else>
       <template v-for="item in results" :key="item.id">
-        <character-card :character="item" />
+        <character-card
+          :character="item"
+          :favorites="favorites"
+          @favorite-handler="setFavorite"
+        />
       </template>
     </div>
     <vue-awesome-paginate
       :total-items="info.count"
-      :items-per-page="info.count/info.pages"
+      :items-per-page="info.count / info.pages"
       :max-pages-shown="5"
       v-model="currentPage"
       :on-click="onClickHandler"
@@ -60,9 +64,9 @@
 import { characterList } from "../providers/api";
 import { onMounted, ref } from "vue";
 import CharacterCard from "../components/CharacterCard.vue";
-import Spinner from '../components/Spinner.vue'
+import Spinner from "../components/Spinner.vue";
 
-const isLoading = ref(true)
+const isLoading = ref(true);
 const currentPage = ref(1);
 const results = ref([]);
 const info = ref({
@@ -78,7 +82,7 @@ const filter = {
   type: null,
   status: null,
   gender: null,
-  page: null
+  page: null,
 };
 
 const genders = [
@@ -123,19 +127,36 @@ const status = [
   },
 ];
 
-onMounted(() => getCharacters());
+let favorites = [];
+
+onMounted(() => {
+  if (localStorage.getItem("favorites")) {
+    try {
+      favorites = JSON.parse(localStorage.getItem("favorites"));
+    } catch (e) {
+      localStorage.removeItem("favorites");
+    }
+  }
+  getCharacters();
+});
+
+function setFavorite(id) {
+  const index = favorites.findIndex((_id) => _id === id);
+  index === -1 ? favorites.push(id) : favorites.splice(index, 1);
+  localStorage.setItem('favorites', JSON.stringify(favorites))
+}
 
 const onClickHandler = async (page) => {
-  filter.page = page
-  await getCharacters()
+  filter.page = page;
+  await getCharacters();
 };
 
 async function getCharacters() {
-  isLoading.value = true
+  isLoading.value = true;
   const data = await characterList({ filter });
   results.value = data.results;
   info.value = data.info;
-  isLoading.value = false
+  isLoading.value = false;
 }
 </script>
 
