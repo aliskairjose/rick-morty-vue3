@@ -138,9 +138,9 @@ onMounted(() => {
   getCharacters();
 });
 
-function setFavorite(id) {
-  const index = favorites.findIndex((_id) => _id === id);
-  index === -1 ? favorites.push(id) : favorites.splice(index, 1);
+function setFavorite(_character) {
+  const index = favorites.findIndex((c) => c.id === _character.id);
+  index === -1 ? favorites.push(_character) : favorites.splice(index, 1);
   localStorage.setItem('favorites', JSON.stringify(favorites))
 }
 

@@ -16,12 +16,9 @@
           <h1 class="md:text-3xl text-2xl hover:text-yellow-600">
             {{ character.name }}
           </h1>
-          <button
-            type="button"
-            @click="favoriteHandler"
-          >
-          <HeartIconSolid class="h-6 w-6 text-yellow-500" v-if="isFavorite" />
-            <HeartIconOutline class="h-6 w-6 text-yellow-500" v-else/>
+          <button type="button" @click="favoriteHandler">
+            <HeartIconSolid class="h-6 w-6 text-yellow-500 hover:animate-pulse" v-if="isFavorite" />
+            <HeartIconOutline class="h-6 w-6 text-yellow-500 hover:animate-pulse" v-else />
           </button>
         </div>
         <div class="flex">
@@ -47,26 +44,22 @@ import { HeartIcon as HeartIconSolid } from "@heroicons/vue/24/solid";
 import { HeartIcon as HeartIconOutline } from "@heroicons/vue/24/outline";
 
 const data = defineProps(["character", "favorites"]);
-const emit = defineEmits(['favoriteHandler'])
+const emit = defineEmits(["favoriteHandler"]);
 const color = ref("");
-const isFavorite = ref(false)
+const isFavorite = ref(false);
 
 onMounted(() => {
-  // console.log( data.favorites)
   data.character.status === "Alive" && (color.value = "green");
   data.character.status === "Dead" && (color.value = "red");
   data.character.status === "unknown" && (color.value = "gray");
 
-  const characterID = data.character.id
-  isFavorite.value = data.favorites.some(id=> id===characterID)
-
+  isFavorite.value = data.favorites.some((c) => c.id === data.character.id);
 });
 
 function favoriteHandler() {
-  isFavorite.value = !isFavorite.value 
-  emit('favoriteHandler', data.character.id)
+  isFavorite.value = !isFavorite.value;
+  emit("favoriteHandler", data.character);
 }
-
 </script>
 
 <style lang="css" scoped>
